@@ -140,5 +140,23 @@ img {
 
 .info {
   display: flex;
-  margin-top: 10px;
+  justify-content: space-around;
+}
+
+.load-more {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.load-more:hover {
+  background-color: #2980b9;
+}
+.hidden {
+  display: none;
 }

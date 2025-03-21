@@ -9,18 +9,24 @@ let lightbox = new SimpleLightbox('.gallery a', {
   captionDelay: 250,
 });
 
-export function renderImages(images) {
-  gallery.innerHTML = images
-    .map(
-      ({
-        webformatURL,
-        largeImageURL,
-        tags,
-        likes,
-        views,
-        comments,
-        downloads,
-      }) => `
+export function renderImages(images, append = false) {
+  if (!append) {
+    gallery.innerHTML = ''; // Очищаємо галерею тільки при першому запиті
+  }
+
+  gallery.insertAdjacentHTML(
+    'beforeend',
+    images
+      .map(
+        ({
+          webformatURL,
+          largeImageURL,
+          tags,
+          likes,
+          views,
+          comments,
+          downloads,
+        }) => `
         <li class="gallery-item">
             <a href="${largeImageURL}">
                 <img src="${webformatURL}" alt="${tags}" loading="lazy" />
@@ -32,11 +38,42 @@ export function renderImages(images) {
                 <p>⬇️ ${downloads} Downloads</p>
             </div>
         </li>
-    `
-    )
-    .join('');
+      `
+      )
+      .join('')
+  );
+
   lightbox.refresh();
 }
+
+// export function renderImages(images) {
+//   gallery.innerHTML = images
+//     .map(
+//       ({
+//         webformatURL,
+//         largeImageURL,
+//         tags,
+//         likes,
+//         views,
+//         comments,
+//         downloads,
+//       }) => `
+//         <li class="gallery-item">
+//             <a href="${largeImageURL}">
+//                 <img src="${webformatURL}" alt="${tags}" loading="lazy" />
+//             </a>
+//             <div class="info">
+//                 <p>❤️ ${likes} Likes</p>
+//                 <p>👁️ ${views} Views</p>
+//                 <p>💬 ${comments} Comments</p>
+//                 <p>⬇️ ${downloads} Downloads</p>
+//             </div>
+//         </li>
+//     `
+//     )
+//     .join('');
+//   lightbox.refresh();
+// }
 
 export function showLoader() {
   document.querySelector('.loader').classList.add('visible');
