@@ -40,8 +40,9 @@ async function handleSearch(query) {
   }
 
   currentQuery = query;
-  currentPage = 1; // Скидаємо пагінацію при новому запиті
-  document.querySelector('.load-more').style.display = 'none'; // Ховаємо кнопку перед новим запитом
+  currentPage = 1;
+  const loadMoreBtn = document.querySelector('.load-more');
+  loadMoreBtn.classList.hidden = true; // Приховуємо кнопку перед новим запитом
 
   try {
     const images = await fetchImages(currentQuery, currentPage);
@@ -52,33 +53,35 @@ async function handleSearch(query) {
       return;
     }
 
-    console.log('Перед рендерингом!');
     renderImages(images);
+
+    console.log('Кількість отриманих зображень:', images.length);
     if (images.length === 15) {
-      document.querySelector('.load-more').style.display = 'block';
+      loadMoreBtn.classList.hidden = false; // Показуємо кнопку, якщо є більше зображень
     } else {
-      document.querySelector('.load-more').style.display = 'none';
-    } // Показуємо кнопку після завантаження
+      loadMoreBtn.classList.hidden = true; // Ховаємо, якщо зображень недостатньо
+    }
   } catch (error) {
     console.error('Помилка під час отримання даних:', error);
   }
 }
 
-document.querySelector('.load-more').addEventListener('click', async () => {
-  currentPage += 1; // Збільшуємо номер сторінки
-  showLoader(); // Показуємо лоадер під кнопкою "Load more"
+const loadMoreBtn = document.querySelector('.load-more');
+loadMoreBtn.addEventListener('click', async () => {
+  currentPage += 1;
+  showLoader();
 
   try {
     const images = await fetchImages(currentQuery, currentPage);
     if (images.length === 0) {
       console.log('Більше зображень немає!');
-      document.querySelector('.load-more').style.display = 'none'; // Ховаємо кнопку, якщо зображень більше немає
+      loadMoreBtn.classList.hidden = true; // Ховаємо кнопку, якщо немає більше зображень
       return;
     }
-    renderImages(images, true); // Додаємо нові зображення до галереї
+    renderImages(images, true);
   } catch (error) {
     console.error('Помилка під час отримання даних:', error);
   } finally {
-    hideLoader(); // Ховаємо лоадер після завантаження
+    hideLoader();
   }
 });
