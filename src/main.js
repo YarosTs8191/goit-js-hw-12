@@ -16,7 +16,11 @@ document.querySelector('.form').addEventListener('submit', async event => {
   }
 
   showLoader();
-  const images = await fetchImages(query);
+  currentQuery = query;
+  currentPage = 1;
+  loadMoreBtn.classList.add('hidden'); // Ховаємо кнопку перед новим пошуком
+
+  const images = await fetchImages(currentQuery, currentPage);
   hideLoader();
 
   if (images.length === 0) {
@@ -25,48 +29,17 @@ document.querySelector('.form').addEventListener('submit', async event => {
     );
   } else {
     renderImages(images);
+    if (images.length === 15) {
+      loadMoreBtn.classList.remove('hidden'); // ✅ Виправлено
+    }
   }
 });
 
 // ********************* пагінація **********************
-
 let currentPage = 1;
 let currentQuery = '';
-
-async function handleSearch(query) {
-  if (!query.trim()) {
-    console.log('Порожній запит! Введіть щось для пошуку.');
-    return;
-  }
-
-  currentQuery = query;
-  currentPage = 1;
-  const loadMoreBtn = document.querySelector('.load-more');
-  loadMoreBtn.classList.hidden = true; // Приховуємо кнопку перед новим запитом
-
-  try {
-    const images = await fetchImages(currentQuery, currentPage);
-    console.log('Отримані зображення:', images);
-
-    if (images.length === 0) {
-      console.log('Нічого не знайдено. Спробуйте інший запит!');
-      return;
-    }
-
-    renderImages(images);
-
-    console.log('Кількість отриманих зображень:', images.length);
-    if (images.length === 15) {
-      loadMoreBtn.classList.hidden = false; // Показуємо кнопку, якщо є більше зображень
-    } else {
-      loadMoreBtn.classList.hidden = true; // Ховаємо, якщо зображень недостатньо
-    }
-  } catch (error) {
-    console.error('Помилка під час отримання даних:', error);
-  }
-}
-
 const loadMoreBtn = document.querySelector('.load-more');
+
 loadMoreBtn.addEventListener('click', async () => {
   currentPage += 1;
   showLoader();
@@ -75,10 +48,18 @@ loadMoreBtn.addEventListener('click', async () => {
     const images = await fetchImages(currentQuery, currentPage);
     if (images.length === 0) {
       console.log('Більше зображень немає!');
-      loadMoreBtn.classList.hidden = true; // Ховаємо кнопку, якщо немає більше зображень
+      loadMoreBtn.classList.add('hidden'); // ✅ Ховаємо кнопку при кінці пошуку
+      showError("We're sorry, but you've reached the end of search results.");
       return;
     }
     renderImages(images, true);
+
+    // Прокручування сторінки після завантаження нових зображень
+    const galleryItem = document.querySelector('.gallery-item');
+    if (galleryItem) {
+      const cardHeight = galleryItem.getBoundingClientRect().height;
+      window.scrollBy({ top: cardHeight * 2, behavior: 'smooth' });
+    }
   } catch (error) {
     console.error('Помилка під час отримання даних:', error);
   } finally {

@@ -42,8 +42,6 @@ body {
   gap: 10px;
   background: #f8f9fa;
   padding: 10px;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .form input {
@@ -108,7 +106,6 @@ body {
   list-style: none;
   padding: 0;
   margin-top: 25px;
-  border: 5px solid rgb(186, 188, 191);
   max-width: 1200px; /* Обмежує ширину контейнера */
   width: 100%; /* Щоб адаптувалося до екрана */
   margin-left: auto; /* Центрує контейнер */
@@ -120,22 +117,11 @@ body {
   flex-wrap: wrap;
   justify-content: center;
   align-content: flex-end;
-  max-width: 400px;
   text-align: center;
   margin: 15px;
   max-width: calc(25% - 10px);
   box-sizing: border-box;
-  border: 5px solid #b2b5b8;
   border-radius: 6px;
-}
-
-img {
-  img {
-    width: 200px;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 8px;
-  }
 }
 
 .info {
@@ -160,4 +146,8 @@ img {
 
 .hidden {
   display: none;
+}
+
+.info p {
+  text-align: center;
 }
