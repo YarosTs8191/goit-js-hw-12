@@ -11,7 +11,7 @@ let lightbox = new SimpleLightbox('.gallery a', {
 
 export function renderImages(images, append = false) {
   if (!append) {
-    gallery.innerHTML = ''; // Очищуємо галерею при новому пошуку
+    gallery.innerHTML = '';
   }
 
   gallery.insertAdjacentHTML(
@@ -43,7 +43,7 @@ export function renderImages(images, append = false) {
       .join('')
   );
 
-  lightbox.refresh(); // Оновлюємо SimpleLightbox після додавання нових зображень
+  lightbox.refresh();
 }
 
 export function showLoader() {
