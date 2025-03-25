@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from 'axios'; // ✅ Додаємо імпорт axios
 
 const API_KEY = '49301647-30570283b511de5f9e60954e8';
 const BASE_URL = 'https://pixabay.com/api/';
@@ -17,9 +17,15 @@ export async function fetchImages(query, page = 1) {
         page: page,
       },
     });
-    return response.data.hits;
+
+    console.log('📸 API Response:', response.data); // ✅ Додано для перевірки
+
+    return {
+      images: response.data.hits,
+      totalHits: response.data.totalHits,
+    };
   } catch (error) {
     console.error('Error fetching images:', error);
-    return [];
+    return { images: [], totalHits: 0 };
   }
 }
