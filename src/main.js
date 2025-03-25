@@ -18,7 +18,7 @@ document.querySelector('.form').addEventListener('submit', async event => {
   showLoader();
   currentQuery = query;
   currentPage = 1;
-  loadMoreBtn.classList.add('hidden'); // Ховаємо кнопку перед новим пошуком
+  loadMoreBtn.classList.add('hidden');
 
   const { images, totalHits } = await fetchImages(currentQuery, currentPage);
   hideLoader();
@@ -31,8 +31,7 @@ document.querySelector('.form').addEventListener('submit', async event => {
     renderImages(images);
 
     if (currentPage * 15 < totalHits) {
-      // ✅ Перевіряємо, чи є ще зображення
-      loadMoreBtn.classList.remove('hidden'); // ✅ Кнопка з’являється тільки якщо ще є що завантажувати
+      loadMoreBtn.classList.remove('hidden');
     }
   }
 });
@@ -60,13 +59,11 @@ loadMoreBtn.addEventListener('click', async () => {
     renderImages(images, true);
 
     if (currentPage * 15 >= totalHits) {
-      // ✅ Тепер перевірка точна
       console.log('🔚 Кінець колекції! Ховаємо кнопку.');
       loadMoreBtn.classList.add('hidden');
-      showError("We're sorry, but you've reached the end of search results."); // ✅ Додаємо повідомлення ще раз
+      showError("We're sorry, but you've reached the end of search results.");
     }
 
-    // Прокрутка сторінки після завантаження нових зображень
     const galleryItem = document.querySelector('.gallery-item');
     if (galleryItem) {
       const cardHeight = galleryItem.getBoundingClientRect().height;
